@@ -24,12 +24,13 @@ import io.swagger.annotations.ApiOperation;
 @Api(value="User API Rest")
 @CrossOrigin(origins="*")
 public class UserResource {
+	
     @Autowired
     UserRepository userRepository;
     
     @GetMapping("/users")
     @ApiOperation(value="Retorna uma lista de usuários")
-    public List<User> userList() {
+    public List<User> listUsers() {
         return userRepository.findAll();
     }
     

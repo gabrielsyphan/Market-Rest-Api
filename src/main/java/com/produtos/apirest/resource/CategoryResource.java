@@ -29,7 +29,7 @@ public class CategoryResource {
 	CategoryRepository categoryRepository;
 	
 	@GetMapping("/categories")
-	@ApiOperation(value="Lista todos as categorias")
+	@ApiOperation(value="Lista todas as categorias")
 	public List<Category> listCategories() {
 		return categoryRepository.findAll();
 	}
@@ -41,19 +41,19 @@ public class CategoryResource {
     }
 	
     @PostMapping("/category")
-    @ApiOperation(value="Cadastra uma nova categoria\"")
+    @ApiOperation(value="Cadastra uma nova categoria")
     public Category createCategory(@RequestBody Category category) {
         return categoryRepository.save(category);
     }
     
     @DeleteMapping("/category")
-    @ApiOperation("Deleta um usuário")
+    @ApiOperation("Deleta uma categoria")
     public void deleteCategory(@RequestBody Category category) {
     	categoryRepository.delete(category);
     }
     
     @PutMapping("/category")
-    @ApiOperation("Atualiza os dados de um usuário")
+    @ApiOperation("Atualiza os dados de uma categoria")
     public Category updateCategory(@RequestBody Category category) {
         return categoryRepository.save(category);
     }
