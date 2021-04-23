@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 22/04/2021 às 02:00
+-- Tempo de geração: 23/04/2021 às 20:55
 -- Versão do servidor: 10.4.18-MariaDB
 -- Versão do PHP: 8.0.3
 
@@ -40,7 +40,8 @@ INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'Roupas'),
 (2, 'Cosméticos'),
 (3, 'Alimentos'),
-(4, 'Eletrônicos');
+(4, 'Eletrônicos'),
+(7, 'Calçados');
 
 -- --------------------------------------------------------
 
@@ -53,8 +54,17 @@ CREATE TABLE `coupon` (
   `code` char(6) DEFAULT NULL,
   `discount` decimal(7,2) DEFAULT NULL,
   `total_value` decimal(7,2) DEFAULT NULL,
-  `discount_type_id` int(11) DEFAULT NULL
+  `discount_type_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Despejando dados para a tabela `coupon`
+--
+
+INSERT INTO `coupon` (`id`, `code`, `discount`, `total_value`, `discount_type_id`, `category_id`) VALUES
+(14, 'ODT234', '0.20', '0.00', 5, 0),
+(18, 'MKTA10', '50.00', '4500.00', 6, 4);
 
 -- --------------------------------------------------------
 
@@ -64,9 +74,9 @@ CREATE TABLE `coupon` (
 
 CREATE TABLE `coupon_category` (
   `id` int(11) NOT NULL,
-  `category_id` int(11) DEFAULT NULL,
-  `coupon_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `category_id` int(11) NOT NULL,
+  `coupon_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -78,6 +88,14 @@ CREATE TABLE `discount_type` (
   `id` int(11) NOT NULL,
   `name` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Despejando dados para a tabela `discount_type`
+--
+
+INSERT INTO `discount_type` (`id`, `name`) VALUES
+(5, 'Porcentagem'),
+(6, 'Valor');
 
 -- --------------------------------------------------------
 
@@ -94,7 +112,7 @@ CREATE TABLE `hibernate_sequence` (
 --
 
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
-(5);
+(26);
 
 -- --------------------------------------------------------
 
@@ -108,6 +126,13 @@ CREATE TABLE `product` (
   `name` varchar(30) DEFAULT NULL,
   `value` decimal(7,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Despejando dados para a tabela `product`
+--
+
+INSERT INTO `product` (`id`, `category_id`, `name`, `value`) VALUES
+(22, 4, 'Camera Canon T100', '2100.00');
 
 -- --------------------------------------------------------
 
@@ -170,9 +195,7 @@ ALTER TABLE `coupon`
 -- Índices de tabela `coupon_category`
 --
 ALTER TABLE `coupon_category`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `category_id` (`category_id`),
-  ADD KEY `coupon_id` (`coupon_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices de tabela `discount_type`
@@ -208,31 +231,25 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT de tabela `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `coupon`
 --
 ALTER TABLE `coupon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `coupon_category`
---
-ALTER TABLE `coupon_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de tabela `discount_type`
 --
 ALTER TABLE `discount_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de tabela `user`
@@ -255,13 +272,6 @@ ALTER TABLE `user_type`
 --
 ALTER TABLE `coupon`
   ADD CONSTRAINT `coupon_ibfk_1` FOREIGN KEY (`discount_type_id`) REFERENCES `discount_type` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
---
--- Restrições para tabelas `coupon_category`
---
-ALTER TABLE `coupon_category`
-  ADD CONSTRAINT `coupon_category_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `coupon_category_ibfk_2` FOREIGN KEY (`coupon_id`) REFERENCES `coupon` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Restrições para tabelas `product`

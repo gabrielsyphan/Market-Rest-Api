@@ -21,6 +21,7 @@ public class Coupon implements Serializable {
     private float discount;
     private float total_value;
     private int discount_type_id;
+    private int category_id;
     
 	public int getId() {
 		return id;
@@ -57,7 +58,16 @@ public class Coupon implements Serializable {
 	public int getDiscount_type_id() {
 		return discount_type_id;
 	}
+	
 	public void setDiscount_type_id(int discount_type_id) {
 		this.discount_type_id = discount_type_id;
+	}
+
+	public int getCategory_id() {
+		return category_id;
+	}
+
+	public void setCategory_id(int category_id) {
+		this.category_id = category_id;
 	}
 }
