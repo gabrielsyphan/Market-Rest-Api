@@ -30,31 +30,31 @@ public class CouponResource {
 	
 	@GetMapping("/coupons")
 	@ApiOperation(value="Lista todos os cupons")
-	public List<Coupon> listCategories() {
+	public List<Coupon> listCoupon() {
 		return couponRepository.findAll();
 	}
 	
     @GetMapping("/coupon/{id}")
     @ApiOperation(value="Retorna um único cupom pelo id informado")
-    public Coupon selectCategory(@PathVariable(value="id") int id) {
+    public Coupon selectCoupon(@PathVariable(value="id") int id) {
         return couponRepository.findByid(id);
     }
 	
     @PostMapping("/coupon")
     @ApiOperation(value="Cadastra um novo cupom")
-    public Coupon createCategory(@RequestBody Coupon coupon) {
+    public Coupon createCoupon(@RequestBody Coupon coupon) {
         return couponRepository.save(coupon);
     }
     
     @DeleteMapping("/coupon")
     @ApiOperation("Deleta um cupom")
-    public void deleteCategory(@RequestBody Coupon coupon) {
+    public void deleteCoupon(@RequestBody Coupon coupon) {
     	couponRepository.delete(coupon);
     }
     
     @PutMapping("/coupon")
     @ApiOperation("Atualiza os dados de um cupom")
-    public Coupon updateCategory(@RequestBody Coupon coupon) {
+    public Coupon updateCoupon(@RequestBody Coupon coupon) {
         return couponRepository.save(coupon);
     }
 }
