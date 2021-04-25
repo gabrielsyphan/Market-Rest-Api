@@ -29,31 +29,31 @@ public class CategoryResource {
 	CategoryRepository categoryRepository;
 	
 	@GetMapping("/categories")
-	@ApiOperation(value="Lista todas as categorias")
+	@ApiOperation(value="List all categories")
 	public List<Category> listCategories() {
 		return categoryRepository.findAll();
 	}
 	
     @GetMapping("/category/{id}")
-    @ApiOperation(value="Retorna uma única categoria pelo id informado")
+    @ApiOperation(value="Returns a single category by the given id")
     public Category selectCategory(@PathVariable(value="id") int id) {
         return categoryRepository.findByid(id);
     }
 	
     @PostMapping("/category")
-    @ApiOperation(value="Cadastra uma nova categoria")
+    @ApiOperation(value="Register a new category")
     public Category createCategory(@RequestBody Category category) {
         return categoryRepository.save(category);
     }
     
     @DeleteMapping("/category")
-    @ApiOperation("Deleta uma categoria")
+    @ApiOperation("Deletes a category")
     public void deleteCategory(@RequestBody Category category) {
     	categoryRepository.delete(category);
     }
     
     @PutMapping("/category")
-    @ApiOperation("Atualiza os dados de uma categoria")
+    @ApiOperation("Updates data for a category")
     public Category updateCategory(@RequestBody Category category) {
         return categoryRepository.save(category);
     }

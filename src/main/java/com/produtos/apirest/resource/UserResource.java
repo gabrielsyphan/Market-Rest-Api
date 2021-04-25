@@ -29,31 +29,31 @@ public class UserResource {
     UserRepository userRepository;
     
     @GetMapping("/users")
-    @ApiOperation(value="Retorna uma lista de usuários")
+    @ApiOperation(value="Returns a list of users")
     public List<User> listUsers() {
         return userRepository.findAll();
     }
     
     @GetMapping("/user/{id}")
-    @ApiOperation(value="Retorna um único usuário pelo id informado")
+    @ApiOperation(value="Returns a single user by the given id")
     public User selectUser(@PathVariable(value="id") int id) {
         return userRepository.findByid(id);
     }
     
     @PostMapping("/user")
-    @ApiOperation("Cadastra um novo usuário")
+    @ApiOperation("Register a new user")
     public User createUser(@RequestBody User user) {
         return userRepository.save(user);
     }
     
     @DeleteMapping("/user")
-    @ApiOperation("Deleta um usuário")
+    @ApiOperation("Deletes a user")
     public void deleteUser(@RequestBody User user) {
         userRepository.delete(user);
     }
     
     @PutMapping("/user")
-    @ApiOperation("Atualiza os dados de um usuário")
+    @ApiOperation("Updates a user's data")
     public User updateUser(@RequestBody User user) {
         return userRepository.save(user);
     }

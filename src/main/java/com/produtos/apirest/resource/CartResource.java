@@ -38,22 +38,22 @@ public class CartResource {
 	CouponRepository couponRepository;;
 	
 	@GetMapping("/cart")
-	@ApiOperation(value="Lista os produtos do carrinho")
+	@ApiOperation(value="List the products in the cart")
 	public List<Cart> listCart() {
 		return myCart;
 	}
 	
 	@GetMapping("/cartValue")
-	@ApiOperation(value="Retorna o valor total do carrinho")
+	@ApiOperation(value="Returns the total cart value")
 	public Float cartValue() {
 		totalCartValue = 0;
 		
-		// Calcula o valor total do carrinho
+		// Calculates the total value of the cart
 		for (Cart cart: myCart) {
 			totalCartValue += cart.getTotal_value();
 		}
 		
-		// Verifica a existência de cupons que são aplicáveis ao valor total do carrinho
+		// Checks for coupons that are applicable to the total cart amount
 		for(Coupon coupon: couponRepository.findAll()) {
 			if (coupon.getCategory_id() == 0 && totalCartValue > coupon.getTotal_value()) {
 				if (coupon.getDiscount_type_id() == 5) {
@@ -68,24 +68,24 @@ public class CartResource {
 	}
 	
 	@PostMapping("/cart")
-	@ApiOperation(value="Cadastra um novo produto no carrinho")
+	@ApiOperation(value="Register a new product in the cart")
 	public Cart insertCartItem(@RequestBody Cart cart) throws Exception {
 		
-		// Checa a existência do produto pelo id informado
+		// Checks the existence of the product by the given id
 		Product product = productRepository.findByid(cart.getProduct_id());
 		if (product == null) {
 			throw new Exception("Product not found");
 		}
 		
-		// Declaração das variáveis
+		// Declaration of variables
 		boolean sameProduct = false;
 		boolean discountAplied = false;
 		float discount = 0;
 		
-		// Calcula o valor total do produto inserido
+		// Calculates the total value of the inserted product
 		cart.setTotal_value(product.getValue() * cart.getQuantity());
 		
-		// Checa se já existe o produto no carrinho, se sim, irá atualizar os dados adicionando o que foi informado
+		// Checks if the product already exists in the cart, if so, it will update the data by adding what was informed
 		if (myCart.size() > 0) {
 			for (Cart shopCart: myCart) {
 				if (shopCart.getProduct_id() == cart.getProduct_id()) {
@@ -103,7 +103,7 @@ public class CartResource {
 			}	
 		}
 		
-		// Se o produto não foi atualizado ou se foi mas não havia cupom aplicado, realiza o calculo para aplicar um novo
+		// If the product has not been updated or is gone but there was no coupon applied, perform the calculation to apply a new one
 		if (discountAplied == false) {
 			float cartValue = cart.getTotal_value();
 			
@@ -129,28 +129,28 @@ public class CartResource {
 			}
 		}
 		
-		// Caso seja um produto novo, adiciona ele no carrinho
+		// If it is a new product, add it to the cart
 		if (sameProduct == false) {
 			myCart.add(cart);
 		}
 		
-		// Retorno do método
+		// Cart return
 		return cart;
 	}
 	
     @PutMapping("/cart")
-    @ApiOperation("Atualiza os dados do carrinho")
+    @ApiOperation("Updates the cart data")
     public Cart updateCart(@RequestBody Cart cart) throws Exception {
     	
     	float discount = 0;
     	
-		// Checa a existência do produto pelo id informado
+		// Checks the existence of the product by the given id
 		Product product = productRepository.findByid(cart.getProduct_id());
 		if (product == null) {
 			throw new Exception("Product not found");
 		}
 		
-		// Verifica se existe produtos no carrinho e então atualiza eles
+		// Checks products in the cart and then updates them
 		if (myCart.size() > 0) {
 			for (Cart shopCart: myCart) {
 				if (shopCart.getProduct_id() == cart.getProduct_id()) {
@@ -188,7 +188,8 @@ public class CartResource {
 			throw new Exception("Cart is empty.");
 		}
 		
-		// Retorno do método
+		
+		// Cart return
         return cart;
     }
 }
