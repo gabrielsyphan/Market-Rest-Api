@@ -29,31 +29,31 @@ public class DiscountTypeResource {
 	DiscountTypeRepository discountTypeRepository;
 	
 	@GetMapping("/discounts")
-	@ApiOperation(value="Lista todos os tipos de discontos")
+	@ApiOperation(value="Lists all types of discounts")
 	public List<DiscountType> listDiscountTypes() {
 		return discountTypeRepository.findAll();
 	}
 	
     @GetMapping("/discount/{id}")
-    @ApiOperation(value="Retorna um único disconto pelo id informado")
+    @ApiOperation(value="Returns a single discount by the given id")
     public DiscountType selectCategory(@PathVariable(value="id") int id) {
         return discountTypeRepository.findByid(id);
     }
 	
     @PostMapping("/discount")
-    @ApiOperation(value="Cadastra um novo disconto")
+    @ApiOperation(value="Register a new discount")
     public DiscountType createCategory(@RequestBody DiscountType discountType) {
         return discountTypeRepository.save(discountType);
     }
     
     @DeleteMapping("/discount")
-    @ApiOperation("Deleta um disconto")
+    @ApiOperation("Deletes a discount")
     public void deleteCategory(@RequestBody DiscountType discountType) {
     	discountTypeRepository.delete(discountType);
     }
     
     @PutMapping("/discount")
-    @ApiOperation("Atualiza os dados de um disconto")
+    @ApiOperation("Updates a discount data")
     public DiscountType updateCategory(@RequestBody DiscountType discountType) {
         return discountTypeRepository.save(discountType);
     }
