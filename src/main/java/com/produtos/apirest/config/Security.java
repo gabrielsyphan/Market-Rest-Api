@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.produtos.apirest.resource.ImplementsUserDatailService;
 
@@ -34,27 +35,40 @@ public class Security extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/configuration/security",
-                "/swagger-ui.html",
-                "/webjars/**");
+		// Urls that do not need authorization
+        web.ignoring().antMatchers(
+    		"/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/webjars/**"
+        );
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.GET, "/categories").hasRole("ADMIN");
+		// Authorization role by request and url
+		http.authorizeRequests()
+			.antMatchers(HttpMethod.GET, "/categories").hasRole("ADMIN")
+			.antMatchers("/api/coupon").hasRole("ADMIN")
+			.antMatchers(HttpMethod.GET, "/api/coupon/{id}").hasAnyAuthority()
+			.antMatchers("/api/category").hasRole("ADMIN")
+			.antMatchers(HttpMethod.GET, "/api/category/{id}").hasAnyAuthority()
+			.antMatchers("/api/discount").hasRole("ADMIN")
+			.antMatchers(HttpMethod.GET, "/api/discount/{id}").hasAnyAuthority()
+			.antMatchers("/api/user").hasRole("ADMIN")
+			.anyRequest().authenticated()
+			.and().formLogin().permitAll()
+			.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 	}
 	 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailService);
-//		.passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
+		// Encoder method to user login
 		return new BCryptPasswordEncoder();
 	}
 }

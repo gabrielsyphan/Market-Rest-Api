@@ -1,6 +1,9 @@
 package com.produtos.apirest.resource;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +13,7 @@ import com.produtos.apirest.models.User;
 import com.produtos.apirest.repository.UserRepository;
 
 @Repository
+@Transactional
 public class ImplementsUserDatailService implements UserDetailsService{
 	
 	@Autowired
@@ -23,6 +27,6 @@ public class ImplementsUserDatailService implements UserDetailsService{
 			throw new UsernameNotFoundException("User not found");
 		}
 		
-		return user;
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, true, true, true, user.getAuthorities());
 	}
 }

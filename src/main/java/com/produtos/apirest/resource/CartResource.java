@@ -80,7 +80,6 @@ public class CartResource {
 		// Declaration of variables
 		boolean sameProduct = false;
 		boolean discountAplied = false;
-		float discount = 0;
 		
 		// Calculates the total value of the inserted product
 		cart.setTotal_value(product.getValue() * cart.getQuantity());
@@ -105,28 +104,7 @@ public class CartResource {
 		
 		// If the product has not been updated or is gone but there was no coupon applied, perform the calculation to apply a new one
 		if (discountAplied == false) {
-			float cartValue = cart.getTotal_value();
-			
-			for(Coupon coupon: couponRepository.findAll()) {
-				float aux = cart.getTotal_value();
-				
-				if ((coupon.getCategory_id() == product.getCategory_id()) && aux > coupon.getTotal_value()) {
-					if (coupon.getDiscount_type_id() == 5) {
-						discount = aux - (aux * coupon.getDiscount());
-						aux = discount;
-					} else {
-						discount = coupon.getDiscount();
-						aux -= discount;
-					}
-
-					if (aux < cartValue) {
-						cartValue = aux;
-						cart.setDiscount(discount);
-					}
-					
-					cart.setTotal_value(cartValue);
-				}
-			}
+			cart = couponApply(cart, product);
 		}
 		
 		// If it is a new product, add it to the cart
@@ -142,8 +120,6 @@ public class CartResource {
     @ApiOperation("Updates the cart data")
     public Cart updateCart(@RequestBody Cart cart) throws Exception {
     	
-    	float discount = 0;
-    	
 		// Checks the existence of the product by the given id
 		Product product = productRepository.findByid(cart.getProduct_id());
 		if (product == null) {
@@ -154,33 +130,16 @@ public class CartResource {
 		if (myCart.size() > 0) {
 			for (Cart shopCart: myCart) {
 				if (shopCart.getProduct_id() == cart.getProduct_id()) {
-					shopCart.setQuantity(cart.getQuantity());
-					shopCart.setTotal_value(product.getValue() * cart.getQuantity());
-					shopCart.setDiscount(0);
+					// If the item quantity is updated to 0, the item will be removed
+					if (cart.getQuantity() == 0) {
+						myCart.remove(shopCart);
+					} else {
+						shopCart.setQuantity(cart.getQuantity());
+						shopCart.setTotal_value(product.getValue() * cart.getQuantity());
+						shopCart.setDiscount(0);
 
-					cart = shopCart;
-					
-					float cartValue = cart.getTotal_value();
-					
-					for(Coupon coupon: couponRepository.findAll()) {
-						float aux = cart.getTotal_value();
-						
-						if ((coupon.getCategory_id() == product.getCategory_id()) && aux > coupon.getTotal_value()) {
-							if (coupon.getDiscount_type_id() == 5) {
-								discount = aux - (aux * coupon.getDiscount());
-								aux = discount;
-							} else {
-								discount = coupon.getDiscount();
-								aux -= discount;
-							}
-
-							if (aux < cartValue) {
-								cartValue = aux;
-								cart.setDiscount(discount);
-							}
-							
-							cart.setTotal_value(cartValue);
-						}
+						cart = shopCart;						
+						cart = couponApply(cart, product);
 					}
 				}
 			}	
@@ -188,8 +147,39 @@ public class CartResource {
 			throw new Exception("Cart is empty.");
 		}
 		
-		
 		// Cart return
         return cart;
+    }
+    
+    // Method to apply coupons
+    private Cart couponApply(Cart cart, Product product) {
+		float discount = 0;
+		float cartValue = cart.getTotal_value();
+		
+		// Get all coupons
+		for(Coupon coupon: couponRepository.findAll()) {
+			float aux = cart.getTotal_value();
+			
+			// Checks if the product category is the same as the coupon and if the minimum value has been reached and then applies
+			if ((coupon.getCategory_id() == product.getCategory_id()) && aux > coupon.getTotal_value()) {
+				if (coupon.getDiscount_type_id() == 5) {
+					discount = aux - (aux * coupon.getDiscount());
+					aux = discount;
+				} else {
+					discount = coupon.getDiscount();
+					aux -= discount;
+				}
+
+				if (aux < cartValue) {
+					cartValue = aux;
+					cart.setDiscount(discount);
+				}
+				
+				cart.setTotal_value(cartValue);
+			}
+		}
+		
+		// Cart return
+		return cart;
     }
 }

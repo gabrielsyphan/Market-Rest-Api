@@ -34,8 +34,8 @@ public class SwaggerConfig {
     	
         @SuppressWarnings("rawtypes")
 		ApiInfo apiInfo = new ApiInfo(
-                "Produtos API REST",
-                "API REST de cadastro de produtos.",
+                "Web Market",
+                "Api rest application developed for online markets.",
                 "1.0",
                 "Terms of Service",
                 new Contact("Gabriel Syphan", "https://www.syphan.com.br",
