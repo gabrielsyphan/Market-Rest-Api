@@ -152,7 +152,7 @@ public class CartResource {
     }
     
     // Method to apply coupons
-    private Cart couponApply(Cart cart, Product product) {
+    public Cart couponApply(Cart cart, Product product) {
 		float discount = 0;
 		float cartValue = cart.getTotal_value();
 		

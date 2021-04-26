@@ -18,7 +18,7 @@ public class Category implements Serializable {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     private String name;
-    
+
 	public long getId() {
 		return id;
 	}

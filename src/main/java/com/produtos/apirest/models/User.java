@@ -33,7 +33,7 @@ public class User implements UserDetails{
     		inverseJoinColumns = @JoinColumn (
     		name = "role_id", referencedColumnName = "roleName"))
     private List<Role> role;
-    
+
 	public long getId() {
 		return id;
 	}

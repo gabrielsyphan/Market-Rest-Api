@@ -22,7 +22,7 @@ public class Coupon implements Serializable {
     private float total_value;
     private int discount_type_id;
     private int category_id;
-    
+
 	public int getId() {
 		return id;
 	}

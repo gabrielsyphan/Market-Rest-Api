@@ -20,7 +20,7 @@ public class Product implements Serializable {
 	private int category_id;
     private String name;
     private Float value;
-    
+
 	public int getId() {
 		return id;
 	}

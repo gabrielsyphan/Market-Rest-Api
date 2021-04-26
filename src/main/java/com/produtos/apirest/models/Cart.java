@@ -6,7 +6,7 @@ public class Cart {
 	private int quantity;
 	private float total_value;
 	private float discount;
-	
+
 	public int getProduct_id() {
 		return product_id;
 	}
