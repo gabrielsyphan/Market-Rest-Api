@@ -36,12 +36,12 @@ Api rest application developed for Web Market using java spring boot, spring sec
 	* Admin account
 		* grant_type: password
 		* user: admin@admin.com
-		* password: admin
+		* password: 123
 
 	* User account
 		* grant_type: password
 		* user: user@user.com
-		* password: user
+		* password: 123
 
 ![Syphan](https://syphan.com.br/images/secret.png)
 ![Syphan](https://syphan.com.br/images/user.png)
