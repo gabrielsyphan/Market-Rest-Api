@@ -43,10 +43,12 @@ Api rest application developed for Web Market using java spring boot, spring sec
 		* user: user@user.com
 		* password: user
 
-[Imgur](https://imgur.com/5bmGum1)
-[Imgur](https://imgur.com/aMiIwQf)
+![Syphan](https://syphan.com.br/images/secret.png)
+![Syphan](https://syphan.com.br/images/user.png)
 		
 * When you log in, you will receive an authentication token. This token must be informed as Bearer Authentication and must be informed in all requests within the application.
+
+![Syphan](https://syphan.com.br/images/listCategories.png)
 
 ## Support ##
 [gabriel@syphan.com.br](mailto:gabriel@syphan.com.br)
