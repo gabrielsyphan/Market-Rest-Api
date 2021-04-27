@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 25/04/2021 às 18:57
+-- Tempo de geração: 27/04/2021 às 17:33
 -- Versão do servidor: 10.4.18-MariaDB
 -- Versão do PHP: 8.0.3
 
@@ -137,42 +137,69 @@ INSERT INTO `product` (`id`, `category_id`, `name`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `role`
+--
+
+CREATE TABLE `role` (
+  `role_name` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Despejando dados para a tabela `role`
+--
+
+INSERT INTO `role` (`role_name`) VALUES
+('ROLE_ADMIN'),
+('ROLE_USER');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `role_users`
+--
+
+CREATE TABLE `role_users` (
+  `role_role_name` varchar(255) NOT NULL,
+  `users_email` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `user`
 --
 
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `email` varchar(60) DEFAULT NULL,
-  `password` varchar(120) DEFAULT NULL,
-  `type_id` int(11) DEFAULT NULL
+  `email` varchar(60) NOT NULL,
+  `password` varchar(120) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Despejando dados para a tabela `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `type_id`) VALUES
-(1, 'gabriel@syphan.com.br', '$2a$10$tPpIUXVfLLmL0B0A7SWwTOC4p2H8DlTNH7n8ZApsz4TbqP0YZ1lNq', 1),
-(3, 'lucasgabrielpdoliveira@gmail.com', '$2a$10$tPpIUXVfLLmL0B0A7SWwTOC4p2H8DlTNH7n8ZApsz4TbqP0YZ1lNq', 2);
+INSERT INTO `user` (`email`, `password`) VALUES
+('admin@admin.com', '$2a$10$5mm0fvSN8GgVrAseBviu/OR.Rp/o69woLFwB0hpDdevvJbV8iLuvW'),
+('user@user.com', '$2a$10$5mm0fvSN8GgVrAseBviu/OR.Rp/o69woLFwB0hpDdevvJbV8iLuvW');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `user_type`
+-- Estrutura para tabela `user_roles`
 --
 
-CREATE TABLE `user_type` (
-  `id` int(11) NOT NULL,
-  `name` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `user_roles` (
+  `user_id` varchar(255) NOT NULL,
+  `role_id` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Despejando dados para a tabela `user_type`
+-- Despejando dados para a tabela `user_roles`
 --
 
-INSERT INTO `user_type` (`id`, `name`) VALUES
-(1, 'Administrador'),
-(2, 'Cliente');
+INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
+('admin@admin.com', 'ROLE_ADMIN'),
+('user@user.com', 'ROLE_USER');
 
 --
 -- Índices para tabelas despejadas
@@ -211,17 +238,30 @@ ALTER TABLE `product`
   ADD KEY `category_id` (`category_id`);
 
 --
+-- Índices de tabela `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`role_name`);
+
+--
+-- Índices de tabela `role_users`
+--
+ALTER TABLE `role_users`
+  ADD KEY `FKdckiqrra0urkuxmd9kye5r37y` (`users_email`),
+  ADD KEY `FKau2yy62fnud06k5igm2xon6k6` (`role_role_name`);
+
+--
 -- Índices de tabela `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `type_id` (`type_id`);
+  ADD PRIMARY KEY (`email`);
 
 --
--- Índices de tabela `user_type`
+-- Índices de tabela `user_roles`
 --
-ALTER TABLE `user_type`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `user_roles`
+  ADD KEY `FKrhfovtciq1l558cw6udg0h0d3` (`role_id`),
+  ADD KEY `FK55itppkw3i07do3h7qoclqd4k` (`user_id`);
 
 --
 -- AUTO_INCREMENT para tabelas despejadas
@@ -252,18 +292,6 @@ ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT de tabela `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT de tabela `user_type`
---
-ALTER TABLE `user_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
 -- Restrições para tabelas despejadas
 --
 
@@ -278,12 +306,6 @@ ALTER TABLE `coupon`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
---
--- Restrições para tabelas `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `user_type` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
