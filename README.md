@@ -29,7 +29,7 @@ Api rest application developed for Web Market using java spring boot, spring sec
 
 * The application has the apis documentation through Swagger. To use, access the link http://localhost:8080/swagger-ui.html after the project has started.
 
-* To make any request for the application, it is necessary to be authenticated. Authentication is done at http://localhost:8080/login. 
+* To make any request for the application, it is necessary to be authenticated. Authentication is done at http://localhost:8080/oauth/token. 
 
 	* There will be 2 types of pre-registered users: ADMIN and USER. To access them, you will need to make a POST request with basic authorization by entering the client-id and client-secret informed in apliccation.properties. In addition, a form-data with the keys: grant_type = password, user = (userEmail), password = (userPassword).
 
@@ -42,6 +42,9 @@ Api rest application developed for Web Market using java spring boot, spring sec
 		* grant_type: password
 		* user: user@user.com
 		* password: user
+
+[Imgur](https://imgur.com/5bmGum1)
+[Imgur](https://imgur.com/aMiIwQf)
 		
 * When you log in, you will receive an authentication token. This token must be informed as Bearer Authentication and must be informed in all requests within the application.
 
