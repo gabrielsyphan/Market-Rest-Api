@@ -1,5 +1,5 @@
 # Web Market #
-Api rest application developed for Web Market using java spring boot, spring security with Oauth 2.0, Jpa, Hybernate, Swagger and Mysql.
+Api rest application developed for Web Market using java spring boot, spring security Oauth 2.0, Jpa, Hybernate, Swagger and Mysql.
 
 ## 1. Project structure ##
 
@@ -31,7 +31,7 @@ Api rest application developed for Web Market using java spring boot, spring sec
 
 * To make any request for the application, it is necessary to be authenticated. Authentication is done at http://localhost:8080/oauth/token. 
 
-	* There will be 2 types of pre-registered users: ADMIN and USER. To access them, you will need to make a POST request with basic authorization by entering the client-id and client-secret informed in apliccation.properties. In addition, a form-data with the keys: grant_type = password, user = (userEmail), password = (userPassword).
+	* There will be 2 types of pre-registered users: ADMIN and USER. To access them, you will need to make a POST request with Basic Auth by entering the client-id and client-secret informed in apliccation.properties. In addition, a form-data with the keys: grant_type = password, user = (userEmail), password = (userPassword).
 
 	* Admin account
 		* grant_type: password
